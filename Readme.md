@@ -1,7 +1,7 @@
 # GeoLoc
 
 GeoLoc is simple api made for querying some short info from ip address.
-Dns services, external provders collect data from ip adress such as country, region, city, lat, lon etc, this data can be utilized later on. This Api has no specific purpose.
+Dns services, external provders collect data from ip adress such as country, region, city, lat, lon etc, this data can be utilized later on. This Api has no specific purpose, except as viewer of such data.
 
 ## Running
 
@@ -46,7 +46,10 @@ To change the database connection settings, edit the `ConnectionStrings` section
 ### Ipstack Api
 
 To query info about specified ip ipstack is used. Ipstack is external api, with access to thousands of ip addresses. To query you need secret key. Provide it in either `appsettings.json` or `appsettings.Development.json`.
-  "ExternalApiIpstackOptions": {
-    "ApiKey": "XXXXX",  `<<--- replace it here`
+
+  `"ExternalApiIpstackOptions": {
+  
+    "ApiKey": "XXXXX",  `<<--- replace it here` 
+    
     "ApiPath": "XXXXX"   `<<--- replace it here`
-  }
+  }`
