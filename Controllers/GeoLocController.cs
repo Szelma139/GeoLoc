@@ -7,13 +7,10 @@ namespace Backend.Controllers
     [Route("[controller]")]
     public class GeoLocController : ControllerBase
     {
-
-        private readonly ILogger<GeoLocController> _logger;
         private readonly IGeoLocService _geoLocationService;
 
-        public GeoLocController(ILogger<GeoLocController> logger, IGeoLocService geoLocationService)
+        public GeoLocController(IGeoLocService geoLocationService)
         {
-            _logger = logger;
             _geoLocationService = geoLocationService;
         }
 
