@@ -33,11 +33,7 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContinentCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContinentName")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -45,33 +41,21 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CountryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Hostname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Ip")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("Latitude")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
 
-                    b.Property<long>("Longitude")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Lon")
+                        .HasColumnType("float");
 
-                    b.Property<string>("RegionCode")
+                    b.Property<string>("Region")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -88,17 +72,13 @@ namespace Backend.Migrations
                         {
                             Id = 1L,
                             City = "Test",
-                            ContinentCode = "Test",
-                            ContinentName = "Test",
+                            Country = "Test",
                             CountryCode = "Test",
-                            CountryName = "Test",
-                            Hostname = "example.com",
                             Ip = "0.0.0.0",
-                            Latitude = 0L,
-                            Longitude = 0L,
-                            RegionCode = "Test",
+                            Lat = 0.0,
+                            Lon = 0.0,
+                            Region = "Test",
                             RegionName = "Test",
-                            Type = "ipv4",
                             Zip = "0000"
                         });
                 });

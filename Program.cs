@@ -1,15 +1,26 @@
 using Backend;
+using Backend.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddHttpClient("ip-api", (serviceProvider, client) =>
+{
+    var externalApiOptions = serviceProvider.GetRequiredService<IOptions<ExternalApiOptions>>().Value;
+
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.BaseAddress = new Uri(externalApiOptions.ApiPath);
+    client.DefaultRequestHeaders.Add("ApiKey", externalApiOptions.ApiKey);
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddOptions<ExternalApiIpstackOptions>().BindConfiguration("ExternalApiIpstackOptions");
+builder.Services.AddOptions<ExternalApiOptions>().BindConfiguration("ExternalApiOptions");
 builder.Services.AddScoped<IGeoLocService, GeoLocService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>

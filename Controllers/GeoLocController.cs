@@ -1,4 +1,4 @@
-using Backend.Models;
+using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -19,10 +19,15 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Route("{ip}")]
-        public Task<ApiResponse> GetByIp(string ip)
+        public async Task<IActionResult> GetByIp(string ip)
         {
-            var t = _geoLocationService.GetGeoDataByIp(ip);
-            return t;
+            var res = await _geoLocationService.GetGeoDataByIp(ip);
+            if (res == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(res);
         }
     }
 }

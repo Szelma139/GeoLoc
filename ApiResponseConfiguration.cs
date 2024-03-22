@@ -14,16 +14,12 @@ namespace Backend
                 {
                     Id = 1,
                     Ip = "0.0.0.0",
-                    Hostname = "example.com",
-                    Type = "ipv4",
                     City = "Test",
-                    ContinentCode = "Test",
-                    ContinentName = "Test",
-                    CountryCode = "Test",
+                    Country = "Test",
                     Zip = "0000",
-                    CountryName = "Test",
-                    RegionCode = "Test",
+                    CountryCode = "Test",
                     RegionName = "Test",
+                    Region = "Test"
                 });
         }
     }

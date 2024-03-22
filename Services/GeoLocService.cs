@@ -2,9 +2,8 @@
 using Backend.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
-namespace Backend
+namespace Backend.Services
 {
     public interface IGeoLocService
     {
@@ -12,30 +11,22 @@ namespace Backend
     }
     public class GeoLocService : IGeoLocService
     {
-        private readonly IOptions<ExternalApiIpstackOptions> _externalApiOptions;
+        private readonly IOptions<ExternalApiOptions> _externalApiOptions;
         private readonly AppDbContext _dbContext;
-
-        public GeoLocService(IOptions<ExternalApiIpstackOptions> externalApiOptions, AppDbContext dbContext)
+        private readonly IHttpClientFactory _httpClientFactory;
+        public GeoLocService(IOptions<ExternalApiOptions> externalApiOptions, AppDbContext dbContext, IHttpClientFactory httpClientFactory)
         {
             _externalApiOptions = externalApiOptions;
             _dbContext = dbContext;
+            _httpClientFactory = httpClientFactory;
         }
 
-        private async Task<ApiResponse> GetGeoDataFromIpstackByIp(string ip)
+        private async Task<ApiResponse?> GetGeoDataFromExternalApiByIp(string ip)
         {
-            HttpClient client = HttpClientFactory.GetInstance(_externalApiOptions.Value);
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(_externalApiOptions.Value.ApiPath);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<ApiResponse>(responseBody);
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine($"Error while querying external api HTTP: {e.Message}");
-                throw;
-            }
+            var client = _httpClientFactory.CreateClient("ip-api");
+            var res = await client.GetFromJsonAsync<ApiResponse>($"/json/{ip}"); //externalApiOptions.GetReqPath
+
+            return res;
         }
 
         private async Task<ApiResponse> GetGeoDataFromLocalByIp(string ip)
@@ -63,7 +54,7 @@ namespace Backend
             var result = await GetGeoDataFromLocalByIp(ip);
             if (result == null)
             {
-                result = await GetGeoDataFromIpstackByIp(ip);
+                result = await GetGeoDataFromExternalApiByIp(ip);
                 await AddExternalResponseToLocalDb(result);
             }
             return result;
