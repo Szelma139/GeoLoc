@@ -8,6 +8,8 @@ namespace Backend.Services
     public interface IGeoLocService
     {
         public Task<ApiResponse> GetGeoDataByIp(string ip);
+        public Task DeleteByIp(string ip);
+        public Task Update(ApiResponse response);
     }
     public class GeoLocService : IGeoLocService
     {
@@ -28,6 +30,8 @@ namespace Backend.Services
 
             return res;
         }
+
+
 
         private async Task<ApiResponse> GetGeoDataFromLocalByIp(string ip)
         {
@@ -59,6 +63,23 @@ namespace Backend.Services
             }
             return result;
 
+        }
+
+        public async Task DeleteByIp(string ip)
+        {
+            var entityToRemove = _dbContext.ApiResponses.SingleOrDefault(x => x.Ip == ip);
+            if (entityToRemove != null)
+            {
+                _dbContext.Remove(entityToRemove);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task Update(ApiResponse response)
+        {
+            var entity = _dbContext.ApiResponses.Single(y => y.Ip == response.Ip);
+            entity.UpdateEntity(response);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

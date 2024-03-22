@@ -1,3 +1,4 @@
+using Backend.Models;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,21 @@ namespace Backend.Controllers
             }
 
             return Ok(res);
+        }
+
+        [HttpDelete]
+        [Route("{ip}")]
+        public async Task<IActionResult> DeleteByIp(string ip)
+        {
+            await _geoLocationService.DeleteByIp(ip);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] ApiResponse apiResponse)
+        {
+            await _geoLocationService.Update(apiResponse);
+            return Ok();
         }
     }
 }

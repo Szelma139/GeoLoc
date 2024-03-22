@@ -18,5 +18,16 @@ namespace Backend.Models
         public double Lat { get; set; }
         public double Lon { get; set; }
 
+        public ApiResponse UpdateEntity(ApiResponse response)
+        {
+            Country = response.Country;
+            CountryCode = response.CountryCode;
+            Region = response.Region;
+            City = response.City;
+            Zip = response.Zip;
+            Lat = response.Lat;
+            Lon = response.Lon;
+            return this;
+        }
     }
 }
